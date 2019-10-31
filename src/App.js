@@ -13,6 +13,13 @@ class App extends React.Component{
 incrementCounter = () => {
     //this.state.counter += 1;  //trying to increment(or mutate) the state!
     this.setState({counter : this.state.counter + 1 }) //updating state using setState()
+    //To update state more than 1 times use callback with state
+    this.setState((prevState) => {
+      return {counter: prevState.counter + 1}
+  });
+  this.setState((prevState) => {
+      return {counter: prevState.counter + 1}
+  });
     console.log("Button Clicked," , this.state.counter, "times" );
 };
 render() {
