@@ -6,17 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class App extends React.Component{
   constructor() {
     super();
-    this.counter = 0;
+    this.state = {
+        counter: 0
+    };
 }
 incrementCounter = () => {
-    console.log("button clicked");
-    this.counter += 1;
+    //this.state.counter += 1;  //trying to increment(or mutate) the state!
+    this.setState({counter : this.state.counter + 1 }) //updating state using setState()
+    console.log("Button Clicked," , this.state.counter, "times" );
 };
 render() {
     return (
         <div>
             <button onClick={this.incrementCounter}> Click </button>
-            <p>{this.counter}</p>
+            <p>{this.state.counter}</p>
         </div>
     );
 }
