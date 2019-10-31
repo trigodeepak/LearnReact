@@ -2,67 +2,57 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactDOM from 'react-dom';
+
+var course = [  {id: 1, name: "Angular", educator: "Rob"},
+                {id: 2, name: "ReactJS", educator: "John"},
+                {id: 3, name: "Ajax", educator: "Mack"}
+            ];
 
 class App extends React.Component{
-    constructor() {
-        super();
-        const emp1 = {
-            "empId": 100,
-            "empName": "Jack",
-            "age": 30,
-            "salary": 50000,
-            "image": "emp1.png",
-            "achievements": "Has got 3 bravo awards and 1 MVP award. Has worked on cutting edge technologies as well"
-        }
-        const emp2 = {
-            "empId": 101,
-            "empName": "Jane",
-            "age": 24,
-            "salary": 40000,
-            "image": "emp2.png",
-            "achievements": "No major achievements so far"
-        }
-        this.empArr=[emp1,emp2]
-        this.state={
-            selectedEmp:null
-        }
+    constructor(props) {
+        super(props);
+        this.state = { courseData: course, selected: false };
+        console.log("Initialization Phase: 'constructor()' executed");
+        
     }
-    createCard(emp) {
-        var note = null;
-        var achievements=null;
-        if (emp.age < 25) {
-          note = <span className="text-info"> - Fresher</span>
-        }
-        if(this.state.selectedEmp==emp.empId){
-            achievements=<p><i>{emp.achievements}</i></p>
-        }
+    componentWillMount = () => {
+        console.log("Mounting Phase: 'componentWillMount()' executed");  
+    }
+    
+    render = () => {
+        var users = this.state.courseData;
+        console.log("Mounting Phase: 'render()' executed");
         return (
-          <div key={emp.empId} className="card" style={{ "width": 200 }}>
-            <img className="card-img-top" src={emp.image} height="200" alt="Card image cap" />
-            <div className="card-body">
-              <h5 className="card-title text-center">{emp.empName}</h5>
-              <p className="card-text">
-                <span>Id: {emp.empId}</span><br />
-                <span>Age: {emp.age}</span> {note}<br />
-                <span>Salary: {emp.salary}</span><br />
-              </p>
-              {achievements}
-              <button type="button" className="btn btn-primary">Edit</button> <button className="btn btn-success" onClick={()=>{
-                 this.setState({selectedEmp:emp.empId}) 
-              }}>View</button>
+        <div>
+            <h4>UI Courses list</h4>
+            <div> { 
+                users.map((userDetails)=> { 
+                    return (<div key={userDetails.id}>
+                        <b>Course: </b>{userDetails.name} <br/> 
+                        <b>Educator: </b>{userDetails.educator} <br/>
+                        <button onClick={this.clickHandler}>Details</button><br/><br/>
+                    </div>);
+                })}
             </div>
-          </div>
-        )
-      }
-      
-      render(){
-          return (
-            <div>
-              <h3 className="text-center text-primary">Employee Details</h3>
-              {this.empArr.map(emp => {return this.createCard(emp)})}
-            </div>
-          )
-      }
+            <button onClick={this.exitComponent}>Exit</button>
+        </div>
+        );  
+    }
+    componentDidMount = () => {
+        console.log("Mounting Phase: 'componentDidMount()' executed");  
+    }
+    clickHandler = () => {
+        console.log("Details button is clicked, state will change...");
+        this.setState({ selected: true });
+    }
+    exitComponent = () => {
+        console.log("Exit button is clicked, component will be destroyed");
+        ReactDOM.unmountComponentAtNode(document.getElementById('root'));
+    }
+    componentWillUnmount = () => {
+        console.log("Un-Mounting Phase: 'componentWillUnmount()' executed");
+    }
 }
 
 export default App;
