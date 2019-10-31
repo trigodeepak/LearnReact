@@ -1,0 +1,4 @@
+      <span>Price : {book.price}</span> {myfunction(book)}<br/></p>
+
+//but is this the good approach kis se poochu
+function myfunction(book){if(book.price<=300) {return <span className="text-success">BestSeller</span>}}
