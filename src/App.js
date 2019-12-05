@@ -9,64 +9,74 @@ class App extends React.Component{
     constructor() {
         super();
         this.state = {
-            empId: '',
-            empName: '',
-            age: '',
-            salary: '',
-            achievements: '',
+            title : '',
+            author : '',
+            genre : '',
             formErrors: {
-                empNameErr: '',
-                empAgeErr: ''
+                titleError : '',
+                authorError : '',
+                genreError : ''
             },
             fieldValidity: {
-                empName: false,
-                age: false
+                titleValid : false,
+                authorValid : false,
+                genreValid : false
             },
             formValid: false,
             successMessage: ''
         };
     }
-    validateName = (e) => {
-        const name = e.target.value;
+    validateTitle = (e) => {
+        const title = e.target.value;
+        console.log("Is this even called"+title);
         var formErrors = this.state.formErrors;
         var fieldValidity = this.state.fieldValidity;
-        this.setState({ empName: e.target.value });
-        console.log(name.length);
-        if (name.length < 6) {
-            formErrors.empNameErr = "Name must be at least 6 chars";
-            fieldValidity.empName = false;
+        this.setState({ title: e.target.value });
+
+        if (title.length < 4) {
+            formErrors.titleError = "Title must be at least 4 chars";
+            fieldValidity.titleValid = false;
         }
         else {
-            formErrors.empNameErr = "";
-            fieldValidity.empName = true;
+            formErrors.titleError = "";
+            fieldValidity.titleValid = true;
         }
         this.setState({ fieldValidity: fieldValidity })
-        this.setState({ formValid: fieldValidity.empName && fieldValidity.age })
+        this.setState({ formValid: fieldValidity.titleValid && fieldValidity.authorValid && fieldValidity.genreValid })
     }
-    validateAge = (e) => {
-        const age = e.target.value;
-        this.setState({ age: age });
-        var formErrors = this.state.formErrors;
-        var fieldValidity = this.state.fieldValidity;
-        if (age < 18 || age > 60) {
-            formErrors.empAgeErr = "Age must be between 18 and 60"
-            fieldValidity.age = false;
+    validateAuthor = (e) =>{
+        const author = e.target.value;
+        let formErrors = this.state.formErrors;
+        let fieldValidity = this.state.fieldValidity;
+        this.setState({ author : e.target.value});
+        if (author.length < 3) {
+            formErrors.authorError = "Author must be at least 3 chars";
+            fieldValidity.authorValid = false;
         }
         else {
-            formErrors.empAgeErr = ""
-            fieldValidity.age = true;
+            formErrors.authorError = "";
+            fieldValidity.authorValid = true;
         }
-        this.setState({ formErrors: formErrors });
-        this.setState({ formValid: fieldValidity.empName && fieldValidity.age })
+        this.setState({ fieldValidity: fieldValidity })
+        this.setState({ formValid: fieldValidity.titleValid && fieldValidity.authorValid && fieldValidity.genreValid })
     }
-    validateSalary = (e) => {
-        let salary = e.target.value;
-        this.setState({ salary: salary })
+    validateGenre = (e) =>{
+        const genre = e.target.value;
+        let formErrors = this.state.formErrors;
+        let fieldValidity = this.state.fieldValidity;
+        this.setState({ genre : e.target.value});
+        if (genre == "") {
+            formErrors.genreError = "Please select a genre";
+            fieldValidity.genreValid = false;
+        }
+        else {
+            formErrors.genreError = "";
+            fieldValidity.genreValid = true;
+        }
+        this.setState({ fieldValidity: fieldValidity })
+        this.setState({ formValid: fieldValidity.titleValid && fieldValidity.authorValid && fieldValidity.genreValid })
     }
-    validateAchievements = (e) => {
-        let achievements = e.target.value;
-        this.setState({ achievements: achievements })
-    }
+    
     update = (e) => {
         e.preventDefault();
         if (this.state.formValid) {
@@ -84,35 +94,29 @@ class App extends React.Component{
     render() {
         return (
             <div style={{width:500, margin:'0px auto'}}>
-                <h3 className="text-center">The selected ID is {102}</h3>
+                <h3 className="text-center">Add a Book</h3>
                 <form >
                     <div className="form-group">
-                        <label>Employee Id:</label>
-                        <input className="form-control" disabled value={102} />
+                        <label>Title : </label>
+                        <input className="form-control" value={this.state.title} onChange={this.validateTitle}></input>
                     </div>
+                    <span className="text-danger">{this.state.formErrors.titleError}</span>
                     <div className="form-group">
-                        <label>Name:</label>
-                        <input className="form-control" onChange={this.validateName} value={this.state.empName} />
+                        <label>Author : </label>
+                        <input className="form-control" value={this.state.author} onChange={this.validateAuthor}></input>
                     </div>
-                    <span className="text-danger">{this.state.formErrors.empNameErr}</span>
+                    <span className="text-danger">{this.state.formErrors.authorError}</span>
                     <div className="form-group">
-                        <label>Age:</label>
-                        <input className="form-control" onChange={this.validateAge} value={this.state.age} />
-                    </div>
-                    <span className="text-danger">{this.state.formErrors.empAgeErr}</span>
-                    <div className="form-group">
-                        <label>Salary:</label>
-                        <select onChange={this.validateSalary} className="form-control" value={this.state.salary}>
-                            <option value="20000">20000</option>
-                            <option value="30000">30000</option>
-                            <option value="40000">40000</option>
-                            <option value="50000">50000</option>
+                        <label>Genre : </label>
+                        <select className="form-control" value={this.state.genre} onChange={this.validateGenre}>
+                            <option value = "">Select</option>
+                            <option value = "MT">Mystry Thriller</option>
+                            <option value = "F">Fiction</option>
+                            <option value = "NF">Non Fiction</option>
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label>Achievements:</label>
-                        <textarea onChange={this.validateAchievements} className="form-control" value={this.state.achievements} />
-                    </div>
+                    <span className="text-danger">{this.state.formErrors.genreError}</span>
+                    
                     <button type="button" onClick={this.update} className="btn btn-success" disabled={!this.state.formValid}>Update</button><br/>
                     <span className="text-success">{this.state.successMessage}</span>
                 </form>
