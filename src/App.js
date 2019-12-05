@@ -80,15 +80,9 @@ class App extends React.Component{
     update = (e) => {
         e.preventDefault();
         if (this.state.formValid) {
-            var formJSON = {
-                empId: 102,
-                empName: this.state.empName,
-                age: this.state.age,
-                salary: this.state.salary,
-                achievements: this.state.achievements
-            }
-            console.log(JSON.stringify(formJSON));
-            this.setState({ successMessage: JSON.stringify(formJSON) });
+            this.setState({ successMessage: "Book is added" });
+        }else{
+            this.setState({ successMessage: "" });
         }
     }
     render() {
